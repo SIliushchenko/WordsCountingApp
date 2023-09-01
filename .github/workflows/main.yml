@@ -40,12 +40,12 @@ jobs:
         run: dotnet restore
 
       - name: Run unit tests
-      run: dotnet test --configuration Release --logger trx --results-directory TestResults
-      env:
-        SOLUTION: WordsCountingApp.sln
+        run: dotnet test --configuration Release --logger trx --results-directory TestResults
+        env:
+          SOLUTION: WordsCountingApp.sln
 
-    - name: Upload test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: Test Results
-        path: TestResults
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Results
+          path: TestResults
