@@ -82,7 +82,7 @@ public class WordsExtractorService : IWordsExtractorService
 
     private static void CountWordsInLine(string line, IDictionary<string, uint> wordCounts)
     {
-        var words = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+        var words = line.Split((char[])null!, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var word in words)
         {
