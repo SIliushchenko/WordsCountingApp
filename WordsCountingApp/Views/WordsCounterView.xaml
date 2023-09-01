@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="WordsCountingApp.Views.WordsCounterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters1="clr-namespace:Shell.Converters;assembly=Shell"
+             xmlns:viewModels="clr-namespace:WordsCountingApp.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:WordsCounterViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters1:NullToVisibilityConverter x:Key="NullToVisibilityHiddenConverter" IsHidden="True"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="90"></Setter>
+        </Style> 
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{StaticResource TextBlockAliceForeground}"></Setter>
+            <Setter Property="Margin" Value="10,0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="1,10,1, 0">
+            <Button Content="Browse file"
+                    Command="{Binding SelectFilePathCommand}"
+                    CommandParameter="{Binding ElementName=TextBox, Path=Text}"
+                    IsEnabled="{Binding ElementName=ProcessFileButton, Path=IsEnabled}" />
+            <TextBlock x:Name="TextBox" 
+                       Text="{Binding SelectedFilePath}" TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding SelectedFilePath}" />
+        </StackPanel>
+        <Grid Margin="1,5" Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" 
+                    x:Name="ProcessFileButton"
+                    Content="Load File" 
+                    HorizontalAlignment="Left"
+                    Command="{Binding ProcessFileCommand}"
+                    Visibility="{Binding SelectedFilePath, Converter={StaticResource NullToVisibilityHiddenConverter}}" />
+            
+            <Grid Grid.Column="1"
+                  Visibility="{Binding ProcessFileCommand.Execution, Converter={StaticResource NullToVisibilityHiddenConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" 
+                           Visibility="{Binding ProcessFileCommand.Execution.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                           <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProcessFileCommand.Execution.IsCanceled}" Value="True">
+                                    <Setter Property="Text" Value="Loading was cancelled"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ProcessFileCommand.Execution.IsSuccessfullyCompleted}" Value="True">
+                                    <Setter Property="Text" Value="Successfully loaded"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ProcessFileCommand.Execution.IsFaulted}" Value="True">
+                                    <Setter Property="Text" Value="Failed to load"></Setter>
+                                </DataTrigger>
+                           </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ProgressBar Grid.Column="0" Value="{Binding Progress}"
+                             Minimum="0"
+                             Maximum="100"
+                             Visibility="{Binding ProcessFileCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="Cancel"
+                        Grid.Column="1" 
+                        Visibility="{Binding ProcessFileCommand.Execution.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding ProcessFileCommand.CancelCommand}" />
+            </Grid>
+        </Grid>
+        <DataGrid Grid.Row="2" ItemsSource="{Binding ProcessFileCommand.Execution.Result}" AutoGenerateColumns="True" CanUserSortColumns="True">
+        </DataGrid>
+    </Grid>
+</UserControl>

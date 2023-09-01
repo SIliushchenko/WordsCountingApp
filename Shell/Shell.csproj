@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<UseWPF>true</UseWPF>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Page Update="Styles\Brushes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Button.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ProgressBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\StatusBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Theme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomCollections\" />
+  </ItemGroup>
+</Project>

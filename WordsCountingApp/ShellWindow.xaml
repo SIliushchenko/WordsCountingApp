@@ -1,0 +1,25 @@
+﻿<Window x:Class="WordsCountingApp.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:WordsCountingApp.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
+        Title="Words counter" Height="450" Width="800">
+    <Grid Background="{StaticResource MainBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ContentControl Grid.Row="1" Content="{Binding Content}" />
+
+        <StatusBar Grid.Row="2" Background="{StaticResource StatusBarBackground}" VerticalContentAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
