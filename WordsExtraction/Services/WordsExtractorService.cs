@@ -9,7 +9,7 @@ public class WordsExtractorService : IWordsExtractorService
     public async Task<IEnumerable<WordCountModel>?> CountWordsAsync(
         string? filePath,
         IProgress<int>? progress = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken 
     {
         if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
             return default;
