@@ -29,7 +29,7 @@ public class WordsExtractorService : IWordsExtractorService
             while (true)
             {
                 //Read asynchronously to a buffer
-                var bytesRead = await streamReader.ReadAsync(buffer, 150, bufferSize).ConfigureAwait(false);
+                var bytesRead = await streamReader.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
                 bytesProcessed += bytesRead;
 
                 if (cancellationToken.IsCancellationRequested)
@@ -82,7 +82,7 @@ public class WordsExtractorService : IWordsExtractorService
 
     private static void CountWordsInLine(string line, IDictionary<string, uint> wordCounts)
     {
-        var words = line.Split((char[])null!, StringSplitOptions.RemoveEmptyEntries);
+        var words = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (var word in words)
         {
