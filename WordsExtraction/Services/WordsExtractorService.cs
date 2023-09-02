@@ -29,7 +29,7 @@ public class WordsExtractorService : IWordsExtractorService
             while (true)
             {
                 //Read asynchronously to a buffer
-                var bytesRead = await streamReader.ReadAsync(buffer, 0, bufferSize).ConfigureAwait(false);
+                var bytesRead = await streamReader.ReadAsync(buffer, 150, bufferSize).ConfigureAwait(false);
                 bytesProcessed += bytesRead;
 
                 if (cancellationToken.IsCancellationRequested)
